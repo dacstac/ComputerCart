@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('type_user');
+            $table->integer('type_user'); // 0 = admin , 1 = normal user and in case I want to add more: 2 = ***, 3 = ***, etc.
             $table->string('phone_number')->nullable();
             $table->timestamps();
         });

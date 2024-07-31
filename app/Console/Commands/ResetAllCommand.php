@@ -42,6 +42,10 @@ class ResetAllCommand extends Command
         Schema::dropIfExists('users');
         Schema::dropIfExists('activity_log');
         Schema::dropIfExists('images');
+        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('migrations');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('personal_access_tokens');
 
         // Reactivate foreign key verification
         Schema::enableForeignKeyConstraints();
@@ -57,8 +61,8 @@ class ResetAllCommand extends Command
             'database/migrations/2024_07_31_092916_wishlists.php',
             'database/migrations/2024_07_31_092820_payments.php',
             'database/migrations/2024_07_31_092648_address.php',
-            'database/migrations/2024_07_31_092648_logs.php',
-            'database/migrations/2024_07_31_092648_images.php',
+            'database/migrations/2024_07_31_080725_logs.php',
+            'database/migrations/2024_07_31_082037_images.php',
             'database/migrations/2014_10_12_100000_create_password_reset_tokens_table.php',
             'database/migrations/2019_08_19_000000_create_failed_jobs_table.php',
             'database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php',
@@ -71,8 +75,6 @@ class ResetAllCommand extends Command
             ]);
         }
 
-        $this->info('All tables have been removed and recreated correctly.');
-
-        return 0;
+        return $this->info('All tables have been removed and recreated correctly.');;
     }
 }
