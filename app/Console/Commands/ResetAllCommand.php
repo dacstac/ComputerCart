@@ -75,6 +75,7 @@ class ResetAllCommand extends Command
             ]);
         }
 
+        Artisan::call('db:seed', ['--class' => 'users']);
         return $this->info('All tables have been removed and recreated correctly.');;
     }
 }
