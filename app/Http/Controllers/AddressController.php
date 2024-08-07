@@ -52,8 +52,8 @@ class AddressController extends Controller
             'address_1_edit' => ['required', 'max:50'],
             'address_2_edit' => ['nullable', 'max:50'],
             'postal_code_edit' => ['required', 'numeric', 'digits:5'],
-            'city_edit' => ['required', 'regex:/^[A-Za-z\s]*$/'],
-            'state_edit' => ['required', 'regex:/^[A-Za-z\s]*$/'],
+            'city_edit' => ['required', 'regex:/^[A-Za-z\s]+$/'],
+            'state_edit' => ['required', 'regex:/^[A-Za-z\s]+$/'],
             'country_edit' => ['required'],
         ]);
 
