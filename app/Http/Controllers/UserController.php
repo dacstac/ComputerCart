@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function create()
     {
-        return view('admin/createUsers');
+        return view('admin/users/createUsers');
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class UserController extends Controller
 
     public function show()
     {
-        return view('admin/showUsers');
+        return view('admin/users/showUsers');
     }
 
     public function destroy($id)

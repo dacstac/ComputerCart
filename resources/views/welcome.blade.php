@@ -23,47 +23,44 @@
 </head>
 
 <body class="antialiased">
-    <nav>
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="row w-100">
-                    <div class="col-4">
-                        <h1><a href="{{ route('home') }}" class="text-decoration-none fw-bold">ComputerCart</a></h1>
-                    </div>
-                    <div class="col-2 pt-2">
-                        @if (auth()->user())
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    {{ auth()->user()->name }}
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @if (auth()->user()->type_user == 0)
-                                        <li><a class="dropdown-item" href="{{ route('createUsers') }}">Create Users</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('showUsers') }}">Show Users</a>
-                                        </li>
-                                    @endif
-                                    <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('address') }}">Address</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
-                                    {{-- <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li> --}}
-                                </ul>
-                            </div>
-                        @else
-                            <button type="button" class="btn"><a class="link" href="{{ route('startLogin') }}">
-                                    <i class="bi bi-person-circle"></i>My Count</a></button>
-                        @endif
-                    </div>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-4">
+                    <h1><a href="{{ route('home') }}" class="text-decoration-none fw-bold">ComputerCart</a></h1>
+                </div>
+                <div class="col-2 pt-2">
+                    @if (auth()->user())
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                {{ auth()->user()->name }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                @if (auth()->user()->type_user == 0)
+                                    <li><a class="dropdown-item" href="{{ route('createUsers') }}">Create Users</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('showUsers') }}">Show Users</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('createCategories') }}">Create
+                                            Categoty</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('showCategories') }}">Show Category</a>
+                                    </li>
+                                    <hr class="dropdown-divider">
+                                @endif
+                                <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('address') }}">Address</a></li>
+                                <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+                    @else
+                        <button type="button" class="btn"><a class="link" href="{{ route('startLogin') }}">
+                                <i class="bi bi-person-circle"></i>My Count</a></button>
+                    @endif
                 </div>
             </div>
-        </nav>
-        <hr>
+        </div>
     </nav>
+    <hr>
 </body>
 @yield('content')
 
