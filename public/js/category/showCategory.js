@@ -85,10 +85,9 @@ $(function () {
         let id = button.getAttribute('data-id');
         let name = button.getAttribute('data-name');
         let sub = button.getAttribute('data-sub');
-        console.log(sub);
-        
         $("#category").val(name);
-        $("#subcategory").val(sub != "null"  ? sub : "");
+        $("#subcategory").val(sub != "null" ? sub : "");
+        $('#recover').val('show-categories/update/' + id);
         $('#updateCategory').attr('action', 'show-categories/update/' + id);
     });
 });
