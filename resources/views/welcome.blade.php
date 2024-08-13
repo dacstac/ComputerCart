@@ -38,12 +38,16 @@
                             </button>
                             <ul class="dropdown-menu">
                                 @if (auth()->user()->type_user == 0)
+                                    <li><a class="dropdown-item" href="{{ route('indexUsers') }}">Show Users</a></li>
                                     <li><a class="dropdown-item" href="{{ route('createUsers') }}">Create Users</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('showUsers') }}">Show Users</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('indexCategories') }}">Show Category</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('createCategories') }}">Create
                                             Categoty</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('showCategories') }}">Show Category</a>
+                                    <li><a class="dropdown-item" href="{{ route('indexProducts') }}">Show Products</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('createProducts') }}">Create Product</a>
                                     </li>
                                     <hr class="dropdown-divider">
                                 @endif

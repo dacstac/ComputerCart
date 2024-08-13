@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        return view('admin/users/showUsers');
+    }
+
     public function create()
     {
         return view('admin/users/createUsers');
@@ -40,11 +45,6 @@ class UserController extends Controller
             ]);
         }
         return redirect()->route('showUsers');
-    }
-
-    public function show()
-    {
-        return view('admin/users/showUsers');
     }
 
     public function destroy($id)

@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin/category/showCategory');
+        return view('admin/category/index');
     }
 
     /**
@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::get();
-        return view('admin/category/createCategory', compact(['categories']));
+        return view('admin/category/create', compact(['categories']));
     }
 
     /**
@@ -47,7 +47,7 @@ class CategoryController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
         }
-        return redirect()->route('showCategories');
+        return redirect()->route('indexCategories');
     }
 
     /**
@@ -71,7 +71,7 @@ class CategoryController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
         }
-        return redirect()->route('showCategories');
+        return redirect()->route('indexCategories');
     }
 
     /**
@@ -87,11 +87,16 @@ class CategoryController extends Controller
                 $value->name == $category ? $value->delete() : "";
             }
         }
-        return redirect()->route('showCategories');
+        return redirect()->route('indexCategories');
     }
 
     public function dataSubcategory(Request $request)
     {
         return Category::where('name', $request->name)->get();
+    }
+
+    public function dataCategory(Request $request)
+    {
+        return Category::where('id', $request->id)->first();
     }
 }
