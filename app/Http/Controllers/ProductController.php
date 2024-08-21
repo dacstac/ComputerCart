@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Images;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -38,6 +40,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'decimal:0,2', 'gte:0'],
             'stock' => ['required', 'numeric', 'gte:0'],
             'category' => ['required'],
+            'images.*' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
         if ($validator->fails()) {
             return redirect()->route('createProducts')
@@ -58,6 +61,20 @@ class ProductController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+            $id_product =  Product::latest()->first()->id;
+            if ($files = $request->file('images')) {
+                $count = 0;
+                foreach ($files as $file) {
+                    $name = 'imageProduct-' . $id_product . '-' . date('dmY-His') . '-' . $count++ . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('public/images', $name);
+                    Images::create([
+                        'image_path' => $name,
+                        'products_id' => $id_product,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+            }
         }
         return redirect()->route('indexProducts');
     }
@@ -73,9 +90,12 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $categories = Category::get();
+        $product = Product::where('id', $id)->first();
+        $images = Images::where('products_id', $id)->get();
+        return view('admin/product/edit', compact(['categories', 'product', 'images']));
     }
 
     /**
@@ -89,9 +109,10 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'decimal:0,2', 'gte:0'],
             'stock' => ['required', 'numeric', 'gte:0'],
             'category' => ['required'],
+            'images.*' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
         if ($validator->fails()) {
-            return redirect()->route('indexProducts')
+            return redirect()->route('editProducts', $id)
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -109,6 +130,18 @@ class ProductController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+            if ($files = $request->file('images')) {
+                $count = 0;
+                foreach ($files as $file) {
+                    $name = 'imageProduct-' . $id . '-' . date('dmY-His') . '-' . $count++ . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('public/images', $name);
+                    Images::create([
+                        'image_path' => $name,
+                        'products_id' => $id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+            }
         }
         return redirect()->route('indexProducts');
     }
@@ -119,6 +152,17 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::where('id', $id)->delete();
+        foreach (Images::get() as $key => $value) {
+            $value->products_id == $id ? $value->delete() : '';
+        }
         return redirect()->route('indexProducts');
+    }
+
+    public function destroyImage($idProduct, $idImage)
+    {
+        $image = Images::where('id', $idImage)->first();
+        Storage::delete('/public/images/' . $image->image_path);
+        $image->delete();
+        return redirect()->route('editProducts', $idProduct);
     }
 }

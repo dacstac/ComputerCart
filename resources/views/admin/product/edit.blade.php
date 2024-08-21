@@ -1,11 +1,13 @@
 @extends('welcome')
 @section('content')
     <div class="container">
-        <form action="{{ route('storeProducts') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" value="{{ $product->id }}" id="idProduct">
+        <input type="hidden" value="{{ $product->category_id }}" id="idCategory">
+        <form action="{{ route('updateProducts', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3 input-group">
                 <label class="input-group-text col-form-label">Name *</label>
-                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                <input type="text" class="form-control" name="name" value="{{ old('name', $product->name) }}">
             </div>
             @if ($errors->has('name'))
                 <div class="alert alert-danger msg-error">
@@ -14,7 +16,7 @@
             @endif
             <div class="mb-3 input-group">
                 <label class="input-group-text col-form-label">Description *</label>
-                <textarea type="text" class="form-control" name="description">{{ old('description') }}</textarea>
+                <textarea type="text" class="form-control" name="description">{{ old('description', $product->description) }}</textarea>
             </div>
             @if ($errors->has('description'))
                 <div class="alert alert-danger msg-error">
@@ -23,8 +25,8 @@
             @endif
             <div class="mb-3 input-group">
                 <label class="input-group-text col-form-label">Price *</label>
-                <input type="number" class="form-control" name="price" value="{{ old('price') }}" step=".01"
-                    min="0">
+                <input type="number" class="form-control" name="price" value="{{ old('price', $product->price) }}"
+                    step=".01" min="0">
             </div>
             @if ($errors->has('price'))
                 <div class="alert alert-danger msg-error">
@@ -33,8 +35,8 @@
             @endif
             <div class="mb-3 input-group">
                 <label class="input-group-text col-form-label">Stock *</label>
-                <input type="number" class="form-control" name="stock" value="{{ old('stock') }}" step=".01"
-                    min="0">
+                <input type="number" class="form-control" name="stock"
+                    value="{{ old('stock', $product->stock_quantity) }}" step=".01" min="0">
             </div>
             @if ($errors->has('stock'))
                 <div class="alert alert-danger msg-error">
@@ -74,13 +76,41 @@
                 <input type="file" name="images[]" class="form-control" multiple>
             </div>
             @if ($errors->has('images'))
-                @dd('error en imagenes')
                 <div class="alert alert-danger msg-error">
                     <p class="text-danger fw-bold"> {{ $errors->first('images') }}</p>
                 </div>
             @endif
-            <button type="submit" class="btn btn-primary ">Create Product</button>
+            <button type="submit" class="btn btn-primary ">Update Product</button>
         </form>
+        <div class="row">
+            @foreach ($images as $value)
+                <div class="col-sm-4 border">
+                    <img src="{{ asset('storage/images/' . $value->image_path) }}" class="img-fluid">
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-toggle='modal'
+                        data-id="{{ $value->id }}"><i class="bi bi-trash-fill"></i></button>
+                </div>
+            @endforeach
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="warning">Do you want this image?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="" method="POST" id="deleteImage">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="{{ asset('js/product/create.js') }}"></script>
+    <script src="{{ asset('js/product/edit.js') }}"></script>
 @endsection
