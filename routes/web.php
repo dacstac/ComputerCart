@@ -46,12 +46,18 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('indexProducts');
     Route::get('/products/create', [ProductController::class, 'create'])->name('createProducts');
     Route::post('/create/store', [ProductController::class, 'store'])->name('storeProducts');
-    Route::post('/products/destroy/{id}', [ProductController::class, 'destroy'])->name('deleteProducts');
+    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('editProducts');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('updateProducts');
+    Route::post('/products/destroy/{id}', [ProductController::class, 'destroy'])->name('deleteProducts');
     Route::get('/datatable/getProducts', [DatatableController::class, 'getProducts'])->name('getProducts');
     Route::post('/products/subcategorySelector', [CategoryController::class, 'dataSubcategory'])->name('subcategorySelector');
-    Route::post('/subcategorySelector', [CategoryController::class, 'dataSubcategory'])->name('subcategorySelector');
-    Route::post('/searchCategory', [CategoryController::class, 'dataCategory'])->name('searchCategory');
+    Route::post('/products/edit/{id}/subcategorySelector', [CategoryController::class, 'dataSubcategory'])->name('subcategorySelector');
+    //Route::post('/subcategorySelector', [CategoryController::class, 'dataSubcategory'])->name('subcategorySelector');
+    Route::post('/products/edit/{id}/searchCategory', [CategoryController::class, 'dataCategory'])->name('searchCategory');
+    //Images
+    Route::get('/products/{id}/images/edit', [ProductController::class, 'edit'])->name('editImages');
+    Route::post('/products/{id}/images/update', [ProductController::class, 'update'])->name('updateImages');
+    Route::post('/products/edit/{id}/images/destroy/{idImage}', [ProductController::class, 'destroyImage'])->name('deleteImages');
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

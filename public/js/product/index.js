@@ -30,10 +30,8 @@ $(function () {
             "targets": -1,
             "data": "id",
             "render": function (data, type, row, meta) {
-                return `<button type='button' class='btn btn-link' data-bs-toggle='modal' title='Update this product'
-                    data-bs-target='#updateModal' data-id='${data.id}' data-name='${data.name}' data-cat='${data.category_id}'
-                    data-desc='${data.description}' data-price='${data.price}' data-stock='${data.stock_quantity}'>
-                    <i class='bi bi-gear'></i></button>
+                return `<button type='button' class='btn btn-link'title='Update this product'>
+                    <a href='products/edit/${data.id}'><i class='bi bi-gear'></i></a></button>
                     <button type='button' class='btn btn-link' data-bs-toggle='modal' title='Delete this product'
                     data-bs-target='#deleteModal' data-id='${data.id}'><i class='bi bi-trash'></i></button>`
             }
@@ -75,82 +73,5 @@ $(function () {
         let button = event.relatedTarget;
         let id = button.getAttribute('data-id');
         $('#deleteProduct').attr('action', 'products/destroy/' + id);
-    });
-
-
-    //Update the product's data
-    function subcategorySelector() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            }
-        });
-        $.ajax({
-            url: 'subcategorySelector',
-            type: 'POST',
-            data: {
-                'name': $('#dropCategory').val(),
-            },
-            success: function (response) {
-                if (response[0].subcategory != null) {
-                    $('#display_subcategory').hasClass('d-none') ? $('#display_subcategory').removeClass('d-none') : '';
-                    response.forEach(element => {
-                        $("#dropSubcategory").append($('<option>', {
-                            value: element.subcategory,
-                            text: element.subcategory,
-                        }));
-                    });
-                } else {
-                    $('#display_subcategory').addClass('d-none');
-                }
-            }
-        });
-    }
-
-    $("#dropCategory").change(function () {
-        $('#dropSubcategory option').each(function () {
-            $(this).remove();
-        });
-        subcategorySelector();
-    });
-
-    subcategorySelector();
-
-    let updateModal = document.getElementById('updateModal');
-    updateModal.addEventListener('show.bs.modal', function (event) {
-        let button = event.relatedTarget;
-        let id = button.getAttribute('data-id');
-        let name = button.getAttribute('data-name');
-        let categoryId = button.getAttribute('data-cat');
-        let description = button.getAttribute('data-desc');
-        let price = button.getAttribute('data-price');
-        let stock = button.getAttribute('data-stock');
-
-        $("#name").val(name);
-        $("#description").val(description);
-        $("#price").val(price);
-        $("#stock").val(stock);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            }
-        });
-        $.ajax({
-            url: 'searchCategory',
-            type: 'POST',
-            data: {
-                'id': categoryId,
-            },
-            success: function (response) {
-                $("#dropCategory option").each(function () {
-                    $(this).val() == response.name ? $(this).attr('selected', true) : '';
-                });
-                $("#dropSubcategory option").each(function () {
-                    $(this).val() == response.subcategory ? $(this).attr('selected', true) : '';
-                });
-            }
-        });
-        $('#recover').val('products/update/' + id);
-        $('#updateCategory').attr('action', 'products/update/' + id);
     });
 });
