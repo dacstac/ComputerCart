@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('nav')
 @section('content')
     <div class="container">
         <input type="hidden" value="{{ $product->id }}" id="idProduct">
@@ -86,6 +86,8 @@
             @foreach ($images as $value)
                 <div class="col-sm-4 border">
                     <img src="{{ asset('storage/images/' . $value->image_path) }}" class="img-fluid">
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#coverModal" data-bs-toggle='modal'
+                        data-id="{{ $value->id }}"><i class="bi bi-card-image"></i></button>
                     <button class="btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-toggle='modal'
                         data-id="{{ $value->id }}"><i class="bi bi-trash-fill"></i></button>
                 </div>
@@ -99,12 +101,32 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p id="warning">Do you want this image?</p>
+                        <p id="warning">Do you want delete this image?</p>
                     </div>
                     <div class="modal-footer">
                         <form action="" method="POST" id="deleteImage">
                             @csrf
                             <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="coverModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Cover Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="warning">Do you want to make this image the cover image?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="" method="POST" id="coverImage">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </form>
                     </div>
 

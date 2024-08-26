@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('nav')
 @section('content')
     <div class="container">
         <form action="{{ route('updatedataUser') }}" method="POST">

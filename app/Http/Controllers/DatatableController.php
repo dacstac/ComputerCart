@@ -25,7 +25,7 @@ class DatatableController extends Controller
                 'products.*',
                 'categories.name as catName',
                 'categories.subcategory as subcat',
-            );;
+            )->get();
         return datatables()->of($products)->toJson();
     }
 }

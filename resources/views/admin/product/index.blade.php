@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('nav')
 @section('content')
     <div class="container">
         <table class="table table-striped" id="products" data-route="{{ route('editImages', ['id' => '0']) }}">
