@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('nav')
 @section('content')
     <button type="button" class='btn btn-link' data-bs-toggle='modal' data-bs-target='#addModal'>Add Address</button>
     <div class="container">

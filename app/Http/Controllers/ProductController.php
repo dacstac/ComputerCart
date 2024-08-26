@@ -17,7 +17,8 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::get();
-        return view('admin/product/index', compact(['categories']));
+        $products = Product::get();
+        return view('admin/product/index', compact(['categories', 'products']));
     }
 
     /**
@@ -70,6 +71,7 @@ class ProductController extends Controller
                     Images::create([
                         'image_path' => $name,
                         'products_id' => $id_product,
+                        'cover_image' => 0,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
@@ -138,6 +140,7 @@ class ProductController extends Controller
                     Images::create([
                         'image_path' => $name,
                         'products_id' => $id,
+                        'cover_image' => 0,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
                 }
@@ -164,5 +167,24 @@ class ProductController extends Controller
         Storage::delete('/public/images/' . $image->image_path);
         $image->delete();
         return redirect()->route('editProducts', $idProduct);
+    }
+
+    public function coverIMage($idProduct, $idImage)
+    {
+        Images::where('products_id', $idProduct)->update(['cover_image' => 0]);
+        Images::where('id', $idImage)->update(['cover_image' => 1]);
+        return redirect()->route('editProducts', $idProduct);
+    }
+
+    public function searchProducts(Request $request)
+    {
+        if (isset($request->search)) {
+            $term = $request->search;
+            $images = Images::get();
+            $products = Product::where('name', 'like', '%' . $term . '%')->paginate(10);
+            return view('welcome', compact(['products', 'images']))
+                ->with('i', (request()->input('page', 1) - 1) * 10);
+        }
+        return redirect()->route('home');
     }
 }

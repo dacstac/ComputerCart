@@ -62,4 +62,13 @@ $(function () {
         let idProduct = $('#idProduct').val();
         $('#deleteImage').attr('action', '/products/edit/' + idProduct + '/images/destroy/' + id);
     });
+
+    //Convert selected image to cover image
+    let coverModal = document.getElementById('coverModal');
+    coverModal.addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget;
+        let id = button.getAttribute('data-id');
+        let idProduct = $('#idProduct').val();
+        $('#coverImage').attr('action', '/products/edit/' + idProduct + '/images/cover/' + id);
+    });
 });

@@ -27,11 +27,13 @@ Route::get('/login', [AuthController::class, 'index'])->name('startLogin');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/login/recognize', [AuthController::class, 'login'])->name('login');
 Route::post('/login/createAccount', [ProfileController::class, 'createAccount'])->name('createAccount');
+//SearchProducts
+Route::post('/search', [ProductController::class, 'searchProducts'])->name('searchProducts');
 Route::middleware(['admin'])->group(function () {
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('indexUsers');
     Route::get('/users/create', [UserController::class, 'create'])->name('createUsers');
-    Route::post('/create/store', [UserController::class, 'store'])->name('storeUsers');
+    Route::post('/users/create/store', [UserController::class, 'store'])->name('storeUsers');
     Route::post('/users/destroy/{id}', [UserController::class, 'destroy'])->name('delete');
     Route::get('/datatable/getUsers', [DatatableController::class, 'getUsers'])->name('getUsers');
     //Categories
@@ -58,6 +60,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products/{id}/images/edit', [ProductController::class, 'edit'])->name('editImages');
     Route::post('/products/{id}/images/update', [ProductController::class, 'update'])->name('updateImages');
     Route::post('/products/edit/{id}/images/destroy/{idImage}', [ProductController::class, 'destroyImage'])->name('deleteImages');
+    Route::post('/products/edit/{id}/images/cover/{idImage}', [ProductController::class, 'coverImage'])->name('coverImage');
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
